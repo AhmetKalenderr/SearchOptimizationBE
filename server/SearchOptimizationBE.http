@@ -1,0 +1,6 @@
+@SearchOptimizationBE_HostAddress = http://localhost:5114
+
+GET {{SearchOptimizationBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
