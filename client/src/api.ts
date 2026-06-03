@@ -1,4 +1,5 @@
 import type {
+  DocumentDetail,
   DocumentListItem,
   DocumentType,
   DuplicateCheckResult,
@@ -29,6 +30,19 @@ export async function searchDocuments(params: SearchParams): Promise<PaginatedRe
   const res = await fetch(`/api/documents${qs}`);
   if (!res.ok) throw new Error(`Arama başarısız: ${res.status}`);
   return res.json();
+}
+
+export async function getDocument(id: string): Promise<DocumentDetail> {
+  const res = await fetch(`/api/documents/${id}`);
+  if (res.status === 404) throw new Error('Doküman bulunamadı.');
+  if (!res.ok) throw new Error(`Doküman yüklenemedi: ${res.status}`);
+  return res.json();
+}
+
+export async function deleteDocument(id: string): Promise<void> {
+  const res = await fetch(`/api/documents/${id}`, { method: 'DELETE' });
+  if (res.status === 404) throw new Error('Doküman bulunamadı.');
+  if (!res.ok) throw new Error(`Doküman silinemedi: ${res.status}`);
 }
 
 export async function getDocumentTypes(): Promise<DocumentType[]> {

@@ -126,4 +126,18 @@ public class DocumentsController : ControllerBase
             doc.FileSizeKb
         });
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var doc = await _db.Documents.FirstOrDefaultAsync(d => d.Id == id, ct);
+        if (doc is null) return NotFound();
+
+        // İlişkili DocumentTokens ve DocumentContentHashes kayıtları FK üzerinde
+        // ON DELETE CASCADE ile tanımlı olduğundan veritabanı tarafından temizlenir.
+        _db.Documents.Remove(doc);
+        await _db.SaveChangesAsync(ct);
+
+        return NoContent();
+    }
 }

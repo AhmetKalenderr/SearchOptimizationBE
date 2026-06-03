@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { getDocumentTypes, searchDocuments } from '../api';
 import type { DocumentListItem, DocumentType } from '../types';
 
-export function SearchView() {
+interface Props {
+  onSelect: (id: string) => void;
+}
+
+export function SearchView({ onSelect }: Props) {
   const [query, setQuery] = useState('');
   const [typeId, setTypeId] = useState<number | undefined>(undefined);
   const [from, setFrom] = useState('');
@@ -112,7 +116,19 @@ export function SearchView() {
 
       <ul className="result-list">
         {items.map((d) => (
-          <li key={d.id} className="result-item">
+          <li
+            key={d.id}
+            className="result-item result-item-clickable"
+            role="button"
+            tabIndex={0}
+            onClick={() => onSelect(d.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSelect(d.id);
+              }
+            }}
+          >
             <div className="result-title">
               <span className="badge">{d.documentTypeName}</span>
               <span>{d.title}</span>

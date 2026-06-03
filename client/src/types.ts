@@ -11,6 +11,16 @@ export interface DocumentListItem {
   matchedTokenCount: number | null;
 }
 
+export interface DocumentDetail {
+  id: string;
+  title: string;
+  content: string;
+  documentTypeName: string;
+  uploadedBy: string;
+  uploadedAt: string;
+  fileSizeKb: number;
+}
+
 export interface PaginatedResult<T> {
   items: T[];
   total: number;
